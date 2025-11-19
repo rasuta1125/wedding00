@@ -128,6 +128,7 @@ export function ProgressiveImage({
   highQualitySrc,
   alt,
   className = '',
+  src: _src,
   ...props
 }: LazyImageProps & { lowQualitySrc?: string; highQualitySrc?: string }) {
   const [currentSrc, setCurrentSrc] = useState(lowQualitySrc || '')

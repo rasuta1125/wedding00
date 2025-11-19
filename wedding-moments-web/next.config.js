@@ -13,6 +13,10 @@ const nextConfig = {
   // Trailing slash for better compatibility
   trailingSlash: true,
   
+  // Skip static generation for dynamic routes (client-side only)
+  skipTrailingSlashRedirect: true,
+  skipMiddlewareUrlNormalize: true,
+  
   // Environment variables validation
   env: {
     NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,

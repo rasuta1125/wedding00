@@ -7,6 +7,8 @@ import { getStripe } from '@/lib/stripe'
 import CheckoutForm from '@/components/CheckoutForm'
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 
+export const dynamicParams = true
+
 export default function CheckoutPage() {
   const params = useParams()
   const router = useRouter()

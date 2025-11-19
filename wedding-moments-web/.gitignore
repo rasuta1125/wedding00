@@ -1,0 +1,13 @@
+# Environment variables
+.env.local
+.env.*.local
+
+# Build outputs
+.next/
+out/
+node_modules/
+package-lock.json
+
+# IDE
+.vscode/
+.idea/

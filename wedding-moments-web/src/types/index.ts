@@ -24,6 +24,8 @@ export interface EventSettings {
   allowGuestDownload: boolean
   watermark: boolean
   compressionQuality: number
+  maxGuests?: number
+  autoPublish?: boolean
 }
 
 // Photo Types

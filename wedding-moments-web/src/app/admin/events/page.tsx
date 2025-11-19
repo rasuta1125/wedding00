@@ -333,11 +333,11 @@ function EventDetailModal({ eventStats, onClose }: EventDetailModalProps) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">透かし</span>
-                  <span>{event.settings?.enableWatermark ? '有効' : '無効'}</span>
+                  <span>{event.settings?.watermark ? '有効' : '無効'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">画質設定</span>
-                  <span className="capitalize">{event.settings?.photoQuality || 'high'}</span>
+                  <span>{event.settings?.compressionQuality || 80}%</span>
                 </div>
               </div>
             </div>

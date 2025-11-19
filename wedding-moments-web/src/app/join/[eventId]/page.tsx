@@ -11,6 +11,8 @@ import UploadButton from '@/components/UploadButton'
 import { ErrorBoundary, ErrorDisplay } from '@/components/ErrorBoundary'
 import { PageLoader, PhotoGridSkeleton } from '@/components/LoadingStates'
 
+export const dynamicParams = true
+
 export default function JoinEventPage() {
   const params = useParams()
   const searchParams = useSearchParams()

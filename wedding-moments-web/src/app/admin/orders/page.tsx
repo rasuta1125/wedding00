@@ -192,7 +192,7 @@ export default function OrdersPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        ¥{order.amounts.grandTotal.toLocaleString()}
+                        ¥{order.amounts.total.toLocaleString()}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -306,7 +306,7 @@ function OrderDetailModal({ order, onClose, onUpdateStatus, onUpdateShipping }: 
                 {order.items.map((item, index) => (
                   <div key={index} className="flex justify-between text-sm">
                     <span>{item.productName} × {item.quantity}</span>
-                    <span className="font-medium">¥{item.totalPrice.toLocaleString()}</span>
+                    <span className="font-medium">¥{item.subtotal.toLocaleString()}</span>
                   </div>
                 ))}
                 <div className="border-t pt-2 mt-2">
@@ -324,7 +324,7 @@ function OrderDetailModal({ order, onClose, onUpdateStatus, onUpdateShipping }: 
                   </div>
                   <div className="flex justify-between text-base font-bold mt-2">
                     <span>合計</span>
-                    <span>¥{order.amounts.grandTotal.toLocaleString()}</span>
+                    <span>¥{order.amounts.total.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
