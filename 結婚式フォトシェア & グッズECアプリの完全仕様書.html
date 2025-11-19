@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light" style=""><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeddingMoments - 完全開発指示書</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+        body {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 32px 80px;
+            position: relative;
+            box-sizing: border-box;
+            font-family: 'Noto Sans JP', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            font-size: 2.2em;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        h4 {
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        
+        p {
+            text-align: justify;
+            margin-bottom: 15px;
+        }
+        
+        ul, ol {
+            margin-bottom: 15px;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+        }
+        
+        pre {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            padding: 15px;
+            border-left: 4px solid #28a745;
+            margin: 20px 0;
+        }
+        
+        .danger {
+            background-color: #f8d7da;
+            padding: 15px;
+            border-left: 4px solid #dc3545;
+            margin: 20px 0;
+        }
+        
+        .info {
+            background-color: #d1ecf1;
+            padding: 15px;
+            border-left: 4px solid #17a2b8;
+            margin: 20px 0;
+        }
+        
+        .toc {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .toc ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 0.8em;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+        
+        .badge-easy {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-medium {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-hard {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+        }
+        
+        blockquote {
+            border-left: 4px solid #6c757d;
+            padding-left: 20px;
+            margin: 20px 0;
+            color: #6c757d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body style="">
+    <h1>📱 WeddingMoments - 完全開発指示書</h1>
+
+    <div class="info">
+        <p><strong>📅 作成日：</strong>2024年11月18日</p>
+        <p><strong>🎯 目標：</strong>2025年1月末リリース</p>
+        <p><strong>📝 対象：</strong>開発者向け技術仕様書（完全版）</p>
+    </div>
+
+    <h2>🎯 プロジェクト概要</h2>
+    <p>本指示書は、結婚式写真共有アプリ「WeddingMoments」にグッズEC機能を統合したアプリケーションの完全開発仕様書です。QRコードによる簡単ゲスト参加、リアルタイム写真共有、その場でのアルバム注文機能により、従来の写真共有アプリとの差別化を図ります。</p>
+
+    <div class="toc">
+        <h3>📋 目次</h3>
+        <ol>
+            <li>アプリケーション仕様</li>
+            <li>技術スタック詳細</li>
+            <li>データベース設計（Firestore）</li>
+            <li>API設計（Firebase Functions）</li>
+            <li>iOS App実装詳細（SwiftUI）</li>
+            <li>Web App実装（Next.js/React）</li>
+            <li>Firebase Functions実装</li>
+            <li>Stripe決済実装</li>
+            <li>セキュリティ対策</li>
+            <li>エラーハンドリング</li>
+            <li>パフォーマンス最適化</li>
+            <li>テスト計画</li>
+            <li>デプロイ手順</li>
+            <li>モニタリング・ログ</li>
+            <li>運用・保守</li>
+            <li>コスト見積もり</li>
+            <li>チェックリスト</li>
+            <li>トラブルシューティング</li>
+            <li>補足資料</li>
+            <li>まとめ</li>
+        </ol>
+    </div>
+
+    <h2>1. アプリケーション仕様</h2>
+
+    <h3>1.1 プロダクト概要</h3>
+    <ul>
+        <li><strong>アプリ名：</strong>WeddingMoments（仮）</li>
+        <li><strong>コンセプト：</strong>QRコードで簡単参加、ゲスト全員が写真共有、その場でアルバム等を注文可能</li>
+        <li><strong>ターゲット：</strong>結婚式を挙げるカップル、ゲスト</li>
+        <li><strong>差別化：</strong>写真共有 + グッズEC統合</li>
+    </ul>
+
+    <h3>1.2 ユーザータイプ定義</h3>
+    <ul>
+        <li><strong>新郎新婦（ホスト）：</strong>アカウント必須、イベント作成・管理</li>
+        <li><strong>ゲスト：</strong>アカウント不要、QRスキャンで一時参加</li>
+        <li><strong>管理者：</strong>グッズ管理、注文管理</li>
+    </ul>
+
+    <h3>1.3 コア機能一覧</h3>
+    <ol>
+        <li>イベント作成・管理（ホスト）</li>
+        <li>QRコード生成・表示</li>
+        <li>ゲスト参加（登録不要）</li>
+        <li>写真撮影・アップロード</li>
+        <li>リアルタイム写真フィード</li>
+        <li>アルバム管理・ダウンロード</li>
+        <li>グッズカタログ</li>
+        <li>カート・注文機能</li>
+        <li>Stripe決済</li>
+        <li>注文管理・配送追跡</li>
+    </ol>
+
+    <h2>2. 技術スタック詳細</h2>
+
+    <h3>2.1 フロントエンド</h3>
+
+    <h4>iOS App（新郎新婦用）</h4>
+    <ul>
+        <li>言語: Swift 5.9+</li>
+        <li>UI Framework: SwiftUI</li>
+        <li>最小対応: iOS 15.6</li>
+        <li>パッケージマネージャー: Swift Package Manager</li>
+        <li>主要ライブラリ:
+            <ul>
+                <li>Firebase iOS SDK</li>
+                <li>StripePayments-iOS</li>
+                <li>Kingfisher（画像キャッシング）</li>
+                <li>CodeScanner（QRコード生成）</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Web App（ゲスト用）</h4>
+    <ul>
+        <li>Framework: Next.js 14 (React 18)</li>
+        <li>言語: TypeScript</li>
+        <li>スタイリング: Tailwind CSS</li>
+        <li>PWA対応: next-pwa</li>
+        <li>主要ライブラリ:
+            <ul>
+                <li>Firebase JS SDK</li>
+                <li>@stripe/stripe-js</li>
+                <li>react-qr-scanner</li>
+                <li>react-image-crop</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>2.2 バックエンド</h3>
+
+    <h4>Firebase Services</h4>
+    <ul>
+        <li>Authentication: Apple Sign In, Google Sign In</li>
+        <li>Firestore: NoSQLデータベース</li>
+        <li>Storage: 写真・画像保存</li>
+        <li>Functions: サーバーサイドロジック（Node.js 18）</li>
+        <li>Hosting: Web App配信</li>
+        <li>Cloud Messaging: プッシュ通知</li>
+    </ul>
+
+    <h4>その他サービス</h4>
+    <ul>
+        <li>Stripe: 決済処理</li>
+        <li>SendGrid: メール送信</li>
+        <li>ImageKit/Cloudinary: 画像最適化・CDN</li>
+    </ul>
+
+    <h3>2.3 開発環境</h3>
+    <ul>
+        <li>Xcode 15.0+</li>
+        <li>Node.js 18+</li>
+        <li>Git/GitHub</li>
+        <li>Firebase CLI</li>
+        <li>Stripe CLI（テスト用）</li>
+    </ul>
+
+    <h2>3. データベース設計（Firestore）</h2>
+
+    <h3>3.1 Collections構造</h3>
+
+    <h4>users - ユーザー情報</h4>
+    <pre>{
+  userId: string, // Auto-generated
+  email: string,
+  displayName: string,
+  photoURL: string | null,
+  provider: "apple" | "google",
+  createdAt: Timestamp,
+  updatedAt: Timestamp
+}</pre>
+
+    <h4>events - イベント情報</h4>
+    <pre>{
+  eventId: string, // Auto-generated
+  hostUserId: string, // users.userId参照
+  eventName: string, // "山田太郎 &amp; 花子 結婚式"
+  eventDate: string, // ISO 8601 "2025-01-25"
+  eventLocation: string | null,
+  qrToken: string, // 暗号化された一意トークン
+  qrCodeUrl: string, // 生成されたQRコードのURL
+  guestLimit: number, // 25, 50, 100, 175, 250
+  currentGuestCount: number, // リアルタイムカウント
+  status: "draft" | "active" | "ended" | "archived",
+  photosPublishedAt: Timestamp | null, // 写真公開日時
+  autoPublish: boolean, // 翌日自動公開
+  publishTime: string, // "09:00" HH:mm format
+  settings: {
+    allowGuestDownload: boolean,
+    watermark: boolean,
+    compressionQuality: number // 0.1-1.0
+  },
+  subscriptionTier: "basic" | "standard" | "premium",
+  stripeSubscriptionId: string | null,
+  createdAt: Timestamp,
+  updatedAt: Timestamp
+}</pre>
+
+    <h4>guestSessions - ゲストセッション（一時的）</h4>
+    <pre>{
+  sessionId: string, // Auto-generated
+  eventId: string, // events.eventId参照
+  guestToken: string, // 一時トークン
+  deviceInfo: string, // User-Agent等
+  ipAddress: string,
+  expiresAt: Timestamp, // イベント終了後7日
+  lastAccessAt: Timestamp,
+  createdAt: Timestamp
+}</pre>
+
+    <h4>photos - 写真情報</h4>
+    <pre>{
+  photoId: string, // Auto-generated
+  eventId: string, // events.eventId参照
+  uploadedBy: string, // hostUserId or guestToken
+  uploaderType: "host" | "guest",
+  originalUrl: string, // Firebase Storage URL
+  thumbnailUrl: string, // 200x200
+  mediumUrl: string, // 800x800
+  imageMetadata: {
+    width: number,
+    height: number,
+    size: number, // bytes
+    format: string, // "jpg", "png", "heic"
+    exif: object | null
+  },
+  isPublished: boolean, // 公開フラグ
+  uploadedAt: Timestamp,
+  publishedAt: Timestamp | null
+}</pre>
+
+    <h4>products - グッズ商品</h4>
+    <pre>{
+  productId: string, // Auto-generated
+  name: string, // "フォトアルバム（A4サイズ）"
+  description: string,
+  category: "album" | "frame" | "keychain" | "mug" | "calendar" | "card",
+  basePrice: number, // 円（税込）
+  images: string[], // 商品画像URL配列
+  options: [{
+    optionId: string,
+    name: string, // "サイズ"
+    values: [{value: "A4", priceModifier: 0}]
+  }],
+  stockQuantity: number | null, // null = 受注生産
+  isActive: boolean,
+  sortOrder: number,
+  createdAt: Timestamp,
+  updatedAt: Timestamp
+}</pre>
+
+    <h4>orders - 注文情報</h4>
+    <pre>{
+  orderId: string, // Auto-generated
+  eventId: string, // events.eventId参照
+  orderNumber: string, // "WM20250125-001"
+  items: [{
+    productId: string,
+    productName: string,
+    quantity: number,
+    unitPrice: number,
+    selectedOptions: [{optionId: string, value: string}],
+    subtotal: number
+  }],
+  shippingInfo: {
+    name: string,
+    email: string,
+    phone: string,
+    postalCode: string,
+    prefecture: string,
+    city: string,
+    address1: string,
+    address2: string | null
+  },
+  amounts: {
+    subtotal: number,
+    tax: number,
+    shipping: number,
+    total: number
+  },
+  payment: {
+    method: "stripe",
+    stripePaymentIntentId: string,
+    stripeChargeId: string | null,
+    paidAt: Timestamp | null
+  },
+  status: "pending" | "paid" | "processing" | "shipped" | "delivered" | "cancelled",
+  trackingNumber: string | null,
+  shippedAt: Timestamp | null,
+  deliveredAt: Timestamp | null,
+  notes: string | null,
+  createdAt: Timestamp,
+  updatedAt: Timestamp
+}</pre>
+
+    <h3>3.2 インデックス設定</h3>
+    <p>Firestoreコンソールで以下のインデックスを作成：</p>
+    <ul>
+        <li>events: (hostUserId, status)</li>
+        <li>photos: (eventId, uploadedAt)</li>
+        <li>photos: (eventId, isPublished, uploadedAt)</li>
+        <li>orders: (eventId, status)</li>
+        <li>guestSessions: (eventId, expiresAt)</li>
+    </ul>
+
+    <h3>3.3 セキュリティルール</h3>
+    <pre>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() &amp;&amp; request.auth.uid == userId;
+    }
+    
+    function hasValidGuestToken(eventId) {
+      return request.auth.token.eventId == eventId;
+    }
+    
+    // Users
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+    }
+    
+    // Events
+    match /events/{eventId} {
+      allow read: if isAuthenticated() || hasValidGuestToken(eventId);
+      allow create: if isAuthenticated();
+      allow update, delete: if isOwner(resource.data.hostUserId);
+    }
+    
+    // Photos
+    match /photos/{photoId} {
+      allow read: if hasValidGuestToken(resource.data.eventId) || 
+                     isAuthenticated();
+      allow create: if hasValidGuestToken(request.resource.data.eventId) ||
+                       isAuthenticated();
+      allow update, delete: if isOwner(resource.data.eventId);
+    }
+    
+    // Products
+    match /products/{productId} {
+      allow read: if true; // Public
+      allow write: if false; // Admin only (via Functions)
+    }
+    
+    // Orders
+    match /orders/{orderId} {
+      allow read: if isAuthenticated() || 
+                     request.auth.token.email == resource.data.shippingInfo.email;
+      allow create: if true; // Anyone can create (validated in Function)
+      allow update: if false; // Only via Functions
+    }
+  }
+}</pre>
+
+    <h2>4. API設計（Firebase Functions）</h2>
+
+    <h3>4.1 認証関連</h3>
+    <h4>POST /api/auth/createHostAccount</h4>
+    <p>新郎新婦アカウント作成（Firebase Authenticationを使用）</p>
+
+    <h4>GET /api/auth/guestToken</h4>
+    <p>ゲスト用一時トークン発行</p>
+    <ul>
+        <li>Query: eventId, qrToken</li>
+        <li>Response: {sessionToken, expiresAt}</li>
+    </ul>
+
+    <h3>4.2 イベント管理</h3>
+    <h4>POST /api/events/create</h4>
+    <p>イベント作成</p>
+    <pre>Request:
+{
+  "eventName": "山田太郎 &amp; 花子 結婚式",
+  "eventDate": "2025-01-25",
+  "eventLocation": "東京ガーデンパレス",
+  "guestLimit": 100,
+  "autoPublish": true,
+  "publishTime": "09:00"
+}
+
+Response:
+{
+  "success": true,
+  "eventId": "evt_abc123",
+  "qrCodeUrl": "https://storage.../qr_evt_abc123.png",
+  "qrToken": "qr_secret_token"
+}</pre>
+
+    <h4>GET /api/events/:eventId</h4>
+    <p>イベント詳細取得</p>
+
+    <h4>PATCH /api/events/:eventId</h4>
+    <p>イベント更新</p>
+
+    <h4>DELETE /api/events/:eventId</h4>
+    <p>イベント削除（論理削除）</p>
+
+    <h4>POST /api/events/:eventId/publishPhotos</h4>
+    <p>写真一括公開</p>
+
+    <h3>4.3 写真管理</h3>
+    <h4>POST /api/photos/upload</h4>
+    <p>写真アップロード</p>
+    <ul>
+        <li>Multipart form-data</li>
+        <li>Max file size: 10MB</li>
+        <li>Allowed formats: jpg, png, heic</li>
+        <li>Response: {photoId, urls: {original, thumbnail, medium}}</li>
+    </ul>
+
+    <h4>GET /api/photos/list</h4>
+    <p>写真一覧取得</p>
+    <ul>
+        <li>Query: eventId, isPublished, limit, offset</li>
+        <li>Response: {photos: [], total, hasMore}</li>
+    </ul>
+
+    <h4>DELETE /api/photos/:photoId</h4>
+    <p>写真削除</p>
+
+    <h4>POST /api/photos/:eventId/download</h4>
+    <p>アルバム一括ダウンロード（ZIP生成）</p>
+    <ul>
+        <li>Response: {downloadUrl, expiresAt}</li>
+    </ul>
+
+    <h3>4.4 グッズ・注文</h3>
+    <h4>GET /api/products/list</h4>
+    <p>商品一覧取得</p>
+    <ul>
+        <li>Query: category, isActive</li>
+        <li>Response: {products: []}</li>
+    </ul>
+
+    <h4>GET /api/products/:productId</h4>
+    <p>商品詳細</p>
+
+    <h4>POST /api/orders/create</h4>
+    <p>注文作成</p>
+    <pre>Request:
+{
+  "eventId": "evt_abc123",
+  "items": [{
+    "productId": "prod_001",
+    "quantity": 2,
+    "selectedOptions": [{"optionId": "size", "value": "A4"}]
+  }],
+  "shippingInfo": {
+    "name": "山田太郎",
+    "email": "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6d140c000c090c2d08150c001d0108430e0200">[email&#160;protected]</a>",
+    "phone": "090-1234-5678",
+    "postalCode": "100-0001",
+    "prefecture": "東京都",
+    "city": "千代田区",
+    "address1": "千代田1-1-1",
+    "address2": "マンション101"
+  }
+}
+
+Response:
+{
+  "success": true,
+  "orderId": "order_789",
+  "clientSecret": "pi_xxx_secret_yyy" // Stripe PaymentIntent
+}</pre>
+
+    <h4>POST /api/orders/:orderId/confirm</h4>
+    <p>注文確定（決済成功後）</p>
+
+    <h4>GET /api/orders/:orderId</h4>
+    <p>注文詳細取得</p>
+
+    <h4>PATCH /api/orders/:orderId/updateStatus</h4>
+    <p>注文ステータス更新（管理者のみ）</p>
+
+    <h3>4.5 Webhook</h3>
+    <h4>POST /api/webhooks/stripe</h4>
+    <p>Stripe Webhook処理</p>
+    <ul>
+        <li>イベント: payment_intent.succeeded</li>
+        <li>処理: 注文ステータス更新、メール送信</li>
+    </ul>
+
+    <h2>5. iOS App実装詳細（SwiftUI）</h2>
+
+    <h3>5.1 プロジェクト構造</h3>
+    <pre>WeddingMoments/
+├── WeddingMomentsApp.swift
+├── Models/
+│   ├── Event.swift
+│   ├── Photo.swift
+│   ├── Product.swift
+│   └── Order.swift
+├── ViewModels/
+│   ├── AuthViewModel.swift
+│   ├── EventViewModel.swift
+│   ├── PhotoViewModel.swift
+│   └── ShopViewModel.swift
+├── Views/
+│   ├── Auth/
+│   │   ├── SignInView.swift
+│   │   └── SignUpView.swift
+│   ├── Event/
+│   │   ├── EventListView.swift
+│   │   ├── EventDetailView.swift
+│   │   ├── CreateEventView.swift
+│   │   └── QRCodeView.swift
+│   ├── Photo/
+│   │   ├── PhotoGridView.swift
+│   │   ├── CameraView.swift
+│   │   └── PhotoDetailView.swift
+│   └── Shop/
+│       ├── ProductListView.swift
+│       ├── ProductDetailView.swift
+│       ├── CartView.swift
+│       └── CheckoutView.swift
+├── Services/
+│   ├── FirebaseService.swift
+│   ├── StorageService.swift
+│   ├── StripeService.swift
+│   └── NotificationService.swift
+└── Utilities/
+    ├── Constants.swift
+    ├── Extensions.swift
+    └── ImagePicker.swift</pre>
+
+    <h3>5.2 主要コード例</h3>
+
+    <h4>Event.swift - モデル定義</h4>
+    <pre>import Foundation
+import FirebaseFirestore
+
+struct Event: Identifiable, Codable {
+    @DocumentID var id: String?
+    var eventId: String { id ?? "" }
+    var hostUserId: String
+    var eventName: String
+    var eventDate: String
+    var eventLocation: String?
+    var qrToken: String
+    var qrCodeUrl: String
+    var guestLimit: Int
+    var currentGuestCount: Int
+    var status: EventStatus
+    var photosPublishedAt: Timestamp?
+    var autoPublish: Bool
+    var publishTime: String
+    var settings: EventSettings
+    var subscriptionTier: SubscriptionTier
+    var createdAt: Timestamp
+    var updatedAt: Timestamp
+    
+    enum EventStatus: String, Codable {
+        case draft, active, ended, archived
+    }
+    
+    enum SubscriptionTier: String, Codable {
+        case basic, standard, premium
+    }
+    
+    struct EventSettings: Codable {
+        var allowGuestDownload: Bool
+        var watermark: Bool
+        var compressionQuality: Double
+    }
+}</pre>
+
+    <div class="success">
+        <p><strong>✅ 実装のポイント：</strong></p>
+        <ul>
+            <li>Firebase DocumentIDを使用してAutoIDを実現</li>
+            <li>Enumを活用してタイプセーフなコード実装</li>
+            <li>Nested structでJSONデータ構造を正確に反映</li>
+        </ul>
+    </div>
+
+    <h4>EventViewModel.swift</h4>
+    <pre>import Foundation
+import FirebaseFirestore
+import FirebaseAuth
+import Combine
+
+@MainActor
+class EventViewModel: ObservableObject {
+    @Published var events: [Event] = []
+    @Published var currentEvent: Event?
+    @Published var isLoading = false
+    @Published var errorMessage: String?
+    
+    private let db = Firestore.firestore()
+    private var listener: ListenerRegistration?
+    
+    func fetchEvents() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        guard let userId = Auth.auth().currentUser?.uid else {
+            errorMessage = "認証が必要です"
+            return
+        }
+        
+        do {
+            let snapshot = try await db.collection("events")
+                .whereField("hostUserId", isEqualTo: userId)
+                .order(by: "eventDate", descending: true)
+                .getDocuments()
+            
+            events = snapshot.documents.compactMap { doc in
+                try? doc.data(as: Event.self)
+            }
+        } catch {
+            errorMessage = "イベントの取得に失敗しました: \(error.localizedDescription)"
+        }
+    }
+    
+    func createEvent(name: String, date: Date, location: String?, guestLimit: Int) async -&gt; Bool {
+        isLoading = true
+        defer { isLoading = false }
+        
+        guard let userId = Auth.auth().currentUser?.uid else {
+            errorMessage = "認証が必要です"
+            return false
+        }
+        
+        // Firebase Functionを呼び出す
+        do {
+            let functions = Functions.functions()
+            let data: [String: Any] = [
+                "eventName": name,
+                "eventDate": ISO8601DateFormatter().string(from: date),
+                "eventLocation": location ?? "",
+                "guestLimit": guestLimit,
+                "autoPublish": true,
+                "publishTime": "09:00"
+            ]
+            
+            let result = try await functions.httpsCallable("createEvent").call(data)
+            if let response = result.data as? [String: Any],
+               let success = response["success"] as? Bool, success {
+                await fetchEvents()
+                return true
+            }
+        } catch {
+            errorMessage = "イベント作成に失敗しました: \(error.localizedDescription)"
+        }
+        
+        return false
+    }
+    
+    func listenToEvent(eventId: String) {
+        listener?.remove()
+        listener = db.collection("events").document(eventId)
+            .addSnapshotListener { [weak self] snapshot, error in
+                guard let self = self else { return }
+                if let error = error {
+                    self.errorMessage = "リアルタイム更新エラー: \(error.localizedDescription)"
+                    return
+                }
+                
+                if let snapshot = snapshot {
+                    self.currentEvent = try? snapshot.data(as: Event.self)
+                }
+            }
+    }
+    
+    deinit {
+        listener?.remove()
+    }
+}</pre>
+
+    <div class="highlight">
+        <p><strong>⚠️ 重要な実装ポイント：</strong></p>
+        <ul>
+            <li>@MainActorを使用してUI更新を適切に処理</li>
+            <li>async/awaitとCombineを併用したモダンな非同期処理</li>
+            <li>適切なエラーハンドリングとユーザーフィードバック</li>
+            <li>メモリリークを防ぐためのListener適切な解放</li>
+        </ul>
+    </div>
+
+    <h4>QRCodeView.swift</h4>
+    <pre>import SwiftUI
+import CoreImage.CIFilterBuiltins
+
+struct QRCodeView: View {
+    let event: Event
+    @State private var qrImage: UIImage?
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text(event.eventName)
+                .font(.title)
+                .bold()
+            
+            if let qrImage = qrImage {
+                Image(uiImage: qrImage)
+                    .interpolation(.none)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 300, height: 300)
+            } else {
+                ProgressView()
+                    .frame(width: 300, height: 300)
+            }
+            
+            Text("ゲストはこのQRコードをスキャンして参加できます")
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+            
+            ShareLink(item: Image(uiImage: qrImage ?? UIImage()), preview: SharePreview("QRコード")) {
+                Label("QRコードを共有", systemImage: "square.and.arrow.up")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .padding()
+        .onAppear {
+            generateQRCode()
+        }
+    }
+    
+    private func generateQRCode() {
+        let guestUrl = "https://weddingmoments.app/join/\(event.eventId)?token=\(event.qrToken)"
+        
+        let context = CIContext()
+        let filter = CIFilter.qrCodeGenerator()
+        filter.message = Data(guestUrl.utf8)
+        filter.correctionLevel = "H"
+        
+        if let outputImage = filter.outputImage,
+           let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
+            qrImage = UIImage(cgImage: cgImage)
+        }
+    }
+}</pre>
+
+    <h2>6. Web App実装（Next.js/React）</h2>
+
+    <h3>6.1 プロジェクト構造</h3>
+    <pre>wedding-moments-web/
+├── public/
+│   └── manifest.json
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   └── join/[eventId]/page.tsx
+│   ├── components/
+│   │   ├── Camera.tsx
+│   │   ├── PhotoGallery.tsx
+│   │   └── UploadButton.tsx
+│   ├── lib/
+│   │   ├── firebase.ts
+│   │   └── api.ts
+│   └── hooks/
+│       ├── useAuth.ts
+│       └── usePhotos.ts
+├── next.config.js
+└── package.json</pre>
+
+    <h3>6.2 主要コード例</h3>
+
+    <h4>join/[eventId]/page.tsx - ゲスト参加ページ</h4>
+    <pre>'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams, useSearchParams } from 'next/navigation';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, query, where, onSnapshot } from 'firebase/firestore';
+import Camera from '@/components/Camera';
+import PhotoGallery from '@/components/PhotoGallery';
+
+export default function JoinEventPage() {
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const eventId = params.eventId as string;
+  const qrToken = searchParams.get('token');
+  
+  const [event, setEvent] = useState<any>(null);
+  const [photos, setPhotos] = useState<any[]>([]);
+  const [sessionToken, setSessionToken] = useState<string |="" null="">(null);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() =&gt; {
+    if (!eventId || !qrToken) return;
+    
+    // ゲストトークン取得
+    fetch(`/api/auth/guestToken?eventId=${eventId}&amp;qrToken=${qrToken}`)
+      .then(res =&gt; res.json())
+      .then(data =&gt; {
+        if (data.sessionToken) {
+          setSessionToken(data.sessionToken);
+          localStorage.setItem('guestToken', data.sessionToken);
+          fetchEvent();
+        }
+      })
+      .catch(err =&gt; {
+        console.error('トークン取得エラー:', err);
+        setLoading(false);
+      });
+  }, [eventId, qrToken]);
+  
+  useEffect(() =&gt; {
+    if (!eventId || !sessionToken) return;
+    
+    // リアルタイム写真購読
+    const db = getFirestore();
+    const q = query(
+      collection(db, 'photos'),
+      where('eventId', '==', eventId),
+      where('isPublished', '==', true)
+    );
+    
+    const unsubscribe = onSnapshot(q, (snapshot) =&gt; {
+      const newPhotos = snapshot.docs.map(doc =&gt; ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setPhotos(newPhotos);
+    });
+    
+    return () =&gt; unsubscribe();
+  }, [eventId, sessionToken]);
+  
+  const fetchEvent = async () =&gt; {
+    try {
+      const res = await fetch(`/api/events/${eventId}`, {
+        headers: {
+          'Authorization': `Bearer ${sessionToken}`
+        }
+      });
+      const data = await res.json();
+      setEvent(data);
+    } catch (err) {
+      console.error('イベント取得エラー:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const handlePhotoUpload = async (file: File) =&gt; {
+    if (!sessionToken) return;
+    
+    const formData = new FormData();
+    formData.append('photo', file);
+    formData.append('eventId', eventId);
+    formData.append('sessionToken', sessionToken);
+    
+    try {
+      const res = await fetch('/api/photos/upload', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (res.ok) {
+        alert('写真をアップロードしました！');
+      }
+    } catch (err) {
+      console.error('アップロードエラー:', err);
+      alert('アップロードに失敗しました');
+    }
+  };
+  
+  if (loading) {
+    return <div classname="flex items-center justify-center h-screen">読み込み中...</div>;
+  }
+  
+  if (!event) {
+    return <div classname="flex items-center justify-center h-screen">イベントが見つかりません</div>;
+  }
+  
+  return (
+    <div classname="min-h-screen bg-gray-50">
+      <header classname="bg-white shadow">
+        <div classname="max-w-7xl mx-auto py-4 px-4">
+          <h1 classname="text-2xl font-bold text-gray-900">{event.eventName}</h1>
+          <p classname="text-sm text-gray-500">{new Date(event.eventDate).toLocaleDateString('ja-JP')}</p>
+        </div>
+      </header>
+      
+      <main classname="max-w-7xl mx-auto py-6 px-4">
+        <camera oncapture="{handlePhotoUpload}">
+        
+        <div classname="mt-8">
+          <h2 classname="text-xl font-semibold mb-4">みんなの写真</h2>
+          <photogallery photos="{photos}">
+        </photogallery></div>
+      </camera></main>
+    </div>
+  );
+}</string></any[]></any></pre>
+
+    <h4>components/Camera.tsx</h4>
+    <pre>'use client';
+
+import { useRef, useState, useCallback } from 'react';
+
+interface CameraProps {
+  onCapture: (file: File) =&gt; void;
+}
+
+export default function Camera({ onCapture }: CameraProps) {
+  const fileInputRef = useRef<htmlinputelement>(null);
+  const [preview, setPreview] = useState<string |="" null="">(null);
+  
+  const handleFileChange = useCallback((e: React.ChangeEvent<htmlinputelement>) =&gt; {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    // プレビュー表示
+    const reader = new FileReader();
+    reader.onload = (e) =&gt; {
+      setPreview(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+    
+    // アップロード
+    onCapture(file);
+    
+    // リセット
+    setTimeout(() =&gt; {
+      setPreview(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }, 2000);
+  }, [onCapture]);
+  
+  return (
+    <div classname="bg-white rounded-lg shadow p-6">
+      <input ref="{fileInputRef}" type="file" accept="image/*" capture="environment" onchange="{handleFileChange}" classname="hidden">
+      
+      <button onclick="{()" ==""> fileInputRef.current?.click()}
+        className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-blue-700 transition"
+      &gt;
+        📷 写真を撮る
+      </button>
+      
+      {preview &amp;&amp; (
+        <div classname="mt-4">
+          <img src="{preview}" alt="Preview" classname="w-full rounded-lg" data-height-listener-added="true">
+          <p classname="text-center text-sm text-gray-500 mt-2">アップロード中...</p>
+        </div>
+      )}
+    </div>
+  );
+}</htmlinputelement></string></htmlinputelement></pre>
+
+    <h2>7. Firebase Functions実装</h2>
+
+    <h3>7.1 functions/src/index.ts</h3>
+    <pre>import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
+import Stripe from 'stripe';
+
+admin.initializeApp();
+const db = admin.firestore();
+const stripe = new Stripe(functions.config().stripe.secret_key, {
+  apiVersion: '2023-10-16'
+});
+
+// イベント作成
+export const createEvent = functions.https.onCall(async (data, context) =&gt; {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', '認証が必要です');
+  }
+  
+  const { eventName, eventDate, eventLocation, guestLimit, autoPublish, publishTime } = data;
+  
+  // バリデーション
+  if (!eventName || !eventDate || !guestLimit) {
+    throw new functions.https.HttpsError('invalid-argument', '必須項目が不足しています');
+  }
+  
+  // QRトークン生成
+  const qrToken = generateSecureToken();
+  
+  // イベント作成
+  const eventRef = db.collection('events').doc();
+  const eventData = {
+    eventId: eventRef.id,
+    hostUserId: context.auth.uid,
+    eventName,
+    eventDate,
+    eventLocation: eventLocation || null,
+    qrToken,
+    qrCodeUrl: '', // 後でQRコード画像を生成
+    guestLimit,
+    currentGuestCount: 0,
+    status: 'active',
+    photosPublishedAt: null,
+    autoPublish,
+    publishTime,
+    settings: {
+      allowGuestDownload: true,
+      watermark: false,
+      compressionQuality: 0.8
+    },
+    subscriptionTier: 'basic',
+    stripeSubscriptionId: null,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    updatedAt: admin.firestore.FieldValue.serverTimestamp()
+  };
+  
+  await eventRef.set(eventData);
+  
+  // QRコード生成（別のFunctionまたは外部サービス）
+  const qrCodeUrl = await generateQRCode(eventRef.id, qrToken);
+  await eventRef.update({ qrCodeUrl });
+  
+  return {
+    success: true,
+    eventId: eventRef.id,
+    qrCodeUrl,
+    qrToken
+  };
+});
+
+// ゲストトークン発行
+export const getGuestToken = functions.https.onRequest(async (req, res) =&gt; {
+  const { eventId, qrToken } = req.query;
+  
+  if (!eventId || !qrToken) {
+    res.status(400).json({ error: '必須パラメータが不足しています' });
+    return;
+  }
+  
+  // イベント検証
+  const eventDoc = await db.collection('events').doc(eventId as string).get();
+  if (!eventDoc.exists) {
+    res.status(404).json({ error: 'イベントが見つかりません' });
+    return;
+  }
+  
+  const eventData = eventDoc.data();
+  if (eventData?.qrToken !== qrToken) {
+    res.status(401).json({ error: '無効なQRトークンです' });
+    return;
+  }
+  
+  // ゲストセッション作成
+  const sessionToken = generateSecureToken();
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 7); // 7日間有効
+  
+  await db.collection('guestSessions').add({
+    eventId: eventId as string,
+    guestToken: sessionToken,
+    deviceInfo: req.headers['user-agent'] || 'unknown',
+    ipAddress: req.ip,
+    expiresAt: admin.firestore.Timestamp.fromDate(expiresAt),
+    lastAccessAt: admin.firestore.FieldValue.serverTimestamp(),
+    createdAt: admin.firestore.FieldValue.serverTimestamp()
+  });
+  
+  res.json({
+    sessionToken,
+    expiresAt: expiresAt.toISOString()
+  });
+});
+
+// 写真自動公開（スケジュール実行）
+export const autoPublishPhotos = functions.pubsub.schedule('every 1 hours').onRun(async (context) =&gt; {
+  const now = new Date();
+  const todayDate = now.toISOString().split('T')[0];
+  
+  // 今日が公開日で、autoPublishがtrueのイベントを取得
+  const eventsSnapshot = await db.collection('events')
+    .where('eventDate', '==', todayDate)
+    .where('autoPublish', '==', true)
+    .where('status', '==', 'active')
+    .get();
+  
+  for (const doc of eventsSnapshot.docs) {
+    const event = doc.data();
+    const publishTime = event.publishTime || '09:00';
+    const [hours, minutes] = publishTime.split(':').map(Number);
+    
+    if (now.getHours() === hours &amp;&amp; now.getMinutes() &gt;= minutes &amp;&amp; now.getMinutes() &lt; minutes + 60) {
+      // 写真を公開
+      await publishEventPhotos(doc.id);
+    }
+  }
+});
+
+// Stripe Webhook
+export const stripeWebhook = functions.https.onRequest(async (req, res) =&gt; {
+  const sig = req.headers['stripe-signature'] as string;
+  const webhookSecret = functions.config().stripe.webhook_secret;
+  
+  let event: Stripe.Event;
+  
+  try {
+    event = stripe.webhooks.constructEvent(req.rawBody, sig, webhookSecret);
+  } catch (err) {
+    console.error('Webhook signature verification failed:', err);
+    res.status(400).send(`Webhook Error: ${err}`);
+    return;
+  }
+  
+  // イベント処理
+  switch (event.type) {
+    case 'payment_intent.succeeded':
+      const paymentIntent = event.data.object as Stripe.PaymentIntent;
+      await handlePaymentSuccess(paymentIntent);
+      break;
+      
+    case 'payment_intent.payment_failed':
+      const failedPayment = event.data.object as Stripe.PaymentIntent;
+      await handlePaymentFailure(failedPayment);
+      break;
+  }
+  
+  res.json({ received: true });
+});
+
+// ヘルパー関数
+function generateSecureToken(): string {
+  return Math.random().toString(36).substring(2) + Date.now().toString(36);
+}
+
+async function generateQRCode(eventId: string, qrToken: string): Promise<string> {
+  // QRコード生成ロジック（例：qrcode npm package使用）
+  // 生成したQRコードをFirebase Storageにアップロード
+  // URLを返す
+  return `https://storage.googleapis.com/.../qr_${eventId}.png`;
+}</string></pre>
+
+    <h2>8. Stripe決済実装</h2>
+
+    <h3>8.1 iOS側（CheckoutView.swift）</h3>
+    <pre>import SwiftUI
+import Stripe
+
+struct CheckoutView: View {
+    let order: Order
+    @StateObject private var paymentService = StripePaymentService()
+    @State private var paymentSheet: PaymentSheet?
+    @State private var isProcessing = false
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("お支払い")
+                .font(.title)
+                .bold()
+            
+            // 注文サマリー
+            OrderSummaryView(order: order)
+            
+            Button {
+                Task {
+                    await processPayment()
+                }
+            } label: {
+                if isProcessing {
+                    ProgressView()
+                        .tint(.white)
+                } else {
+                    Text("¥\(order.amounts.total) を支払う")
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            .disabled(isProcessing)
+        }
+        .padding()
+    }
+    
+    private func processPayment() async {
+        isProcessing = true
+        defer { isProcessing = false }
+        
+        do {
+            // PaymentIntentを作成
+            let clientSecret = try await paymentService.createPaymentIntent(
+                amount: order.amounts.total,
+                orderId: order.orderId
+            )
+            
+            // Payment Sheetを表示
+            let configuration = PaymentSheet.Configuration()
+            configuration.merchantDisplayName = "WeddingMoments"
+            
+            paymentSheet = PaymentSheet(
+                paymentIntentClientSecret: clientSecret,
+                configuration: configuration
+            )
+            
+            // 決済処理
+            if let sheet = paymentSheet {
+                let result = await sheet.present()
+                
+                switch result {
+                case .completed:
+                    // 成功
+                    showSuccessAlert()
+                case .canceled:
+                    // キャンセル
+                    break
+                case .failed(let error):
+                    // エラー
+                    showErrorAlert(error.localizedDescription)
+                }
+            }
+        } catch {
+            showErrorAlert(error.localizedDescription)
+        }
+    }
+}</pre>
+
+    <h2>9. セキュリティ対策</h2>
+
+    <h3>9.1 認証・認可</h3>
+    <ul>
+        <li>Firebase Authenticationを使用</li>
+        <li>ゲストは一時トークン（JWT）で認証</li>
+        <li>Firestore Security Rulesで厳格なアクセス制御</li>
+    </ul>
+
+    <h3>9.2 データ暗号化</h3>
+    <ul>
+        <li>Firebase Storageは自動的に暗号化</li>
+        <li>機密情報（配送先等）はAES-256で暗号化してFirestoreに保存</li>
+        <li>HTTPS通信を強制</li>
+    </ul>
+
+    <h3>9.3 QRトークンセキュリティ</h3>
+    <pre>import * as crypto from 'crypto';
+
+function generateSecureQRToken(): string {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+function validateQRToken(eventId: string, token: string): boolean {
+  // トークン検証ロジック
+  // 有効期限チェック、使用回数制限等
+  return true;
+}</pre>
+
+    <h2>10. エラーハンドリング</h2>
+
+    <h3>10.1 ネットワークエラー</h3>
+    <pre>enum NetworkError: Error {
+    case noConnection
+    case timeout
+    case serverError(Int)
+    case invalidResponse
+    
+    var localizedDescription: String {
+        switch self {
+        case .noConnection:
+            return "インターネット接続を確認してください"
+        case .timeout:
+            return "接続がタイムアウトしました"
+        case .serverError(let code):
+            return "サーバーエラーが発生しました（\(code)）"
+        case .invalidResponse:
+            return "無効なレスポンスです"
+        }
+    }
+}</pre>
+
+    <h2>11. パフォーマンス最適化</h2>
+
+    <h3>11.1 画像圧縮</h3>
+    <pre>extension UIImage {
+    func compressed(quality: CGFloat = 0.8, maxSize: CGSize = CGSize(width: 1920, height: 1920)) -&gt; UIImage? {
+        // リサイズ
+        let aspectRatio = size.width / size.height
+        var targetSize = maxSize
+        
+        if size.width &gt; maxSize.width || size.height &gt; maxSize.height {
+            if aspectRatio &gt; 1 {
+                targetSize.height = maxSize.width / aspectRatio
+            } else {
+                targetSize.width = maxSize.height * aspectRatio
+            }
+        } else {
+            targetSize = size
+        }
+        
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        let resized = renderer.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: targetSize))
+        }
+        
+        // 圧縮
+        return resized.jpegData(compressionQuality: quality).flatMap { UIImage(data: $0) }
+    }
+}</pre>
+
+    <h2>12. テスト計画</h2>
+
+    <h3>12.1 Unit Tests（XCTest）</h3>
+    <pre>import XCTest
+@testable import WeddingMoments
+
+class EventViewModelTests: XCTestCase {
+    var viewModel: EventViewModel!
+    
+    override func setUp() {
+        super.setUp()
+        viewModel = EventViewModel()
+    }
+    
+    func testCreateEvent() async {
+        let success = await viewModel.createEvent(
+            name: "Test Event",
+            date: Date(),
+            location: "Test Location",
+            guestLimit: 50
+        )
+        
+        XCTAssertTrue(success)
+        XCTAssertFalse(viewModel.events.isEmpty)
+    }
+}</pre>
+
+    <h2>13. デプロイ手順</h2>
+
+    <h3>13.1 iOS App（App Store）</h3>
+    <ol>
+        <li><strong>バージョン管理</strong>
+            <ul>
+                <li>Xcode &gt; General &gt; Version &amp; Build Number更新</li>
+                <li>Git tag作成: <code>git tag v1.0.0</code></li>
+            </ul>
+        </li>
+        <li><strong>Archive作成</strong>
+            <ul>
+                <li>Xcode &gt; Product &gt; Archive</li>
+                <li>Organizer &gt; Distribute App</li>
+            </ul>
+        </li>
+        <li><strong>App Store Connect</strong>
+            <ul>
+                <li>アプリ情報入力</li>
+                <li>スクリーンショット追加</li>
+                <li>審査に提出</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h3>13.2 Firebase Functions</h3>
+    <pre># デプロイ
+firebase deploy --only functions
+
+# 特定の関数のみ
+firebase deploy --only functions:createEvent,functions:stripeWebhook
+
+# 本番環境設定
+firebase functions:config:set stripe.secret_key="sk_live_..."
+firebase functions:config:set stripe.webhook_secret="whsec_..."</pre>
+
+    <h2>14. モニタリング・ログ</h2>
+
+    <h3>14.1 Firebase Crashlytics（iOS）</h3>
+    <pre>import FirebaseCrashlytics
+
+// エラー記録
+Crashlytics.crashlytics().record(error: error)
+
+// カスタムログ
+Crashlytics.crashlytics().log("User uploaded photo: \(photoId)")
+
+// ユーザーID設定
+Crashlytics.crashlytics().setUserID(userId)</pre>
+
+    <h2>15. 運用・保守</h2>
+
+    <h3>15.1 バックアップ戦略</h3>
+    <ul>
+        <li>Firestore: 自動バックアップ有効化（Firebase Console）</li>
+        <li>Storage: バージョニング有効化</li>
+        <li>定期的なエクスポート（週次）</li>
+    </ul>
+
+    <h3>15.2 アップデート計画</h3>
+    <ul>
+        <li><strong>Phase 1（リリース直後）：</strong>バグ修正、パフォーマンス改善</li>
+        <li><strong>Phase 2（1-2ヶ月後）：</strong>動画対応、写真編集機能</li>
+        <li><strong>Phase 3（3-4ヶ月後）：</strong>Android版リリース</li>
+        <li><strong>Phase 4（6ヶ月後）：</strong>AI自動アルバム作成</li>
+    </ul>
+
+    <h2>16. コスト見積もり</h2>
+
+    <h3>16.1 初期開発コスト（6週間）</h3>
+    <table>
+        <tbody><tr>
+            <th>項目</th>
+            <th>金額</th>
+            <th>備考</th>
+        </tr>
+        <tr>
+            <td>Apple Developer</td>
+            <td>¥12,980/年</td>
+            <td>必須</td>
+        </tr>
+        <tr>
+            <td>Firebase</td>
+            <td>¥0</td>
+            <td>Spark Plan → 後でBlaze Plan</td>
+        </tr>
+        <tr>
+            <td>Stripe</td>
+            <td>決済手数料のみ</td>
+            <td>3.6%</td>
+        </tr>
+        <tr>
+            <td>ドメイン</td>
+            <td>¥1,000/年</td>
+            <td>.app ドメイン推奨</td>
+        </tr>
+        <tr>
+            <th>合計</th>
+            <th>約¥14,000</th>
+            <th>初期費用</th>
+        </tr>
+    </tbody></table>
+
+    <h3>16.2 月間運用コスト（想定100イベント/月）</h3>
+    <table>
+        <tbody><tr>
+            <th>サービス</th>
+            <th>月額</th>
+            <th>備考</th>
+        </tr>
+        <tr>
+            <td>Firebase Blaze Plan</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>　- Firestore</td>
+            <td>¥5,000</td>
+            <td>読み書き・ストレージ</td>
+        </tr>
+        <tr>
+            <td>　- Storage</td>
+            <td>¥10,000</td>
+            <td>画像保存・帯域</td>
+        </tr>
+        <tr>
+            <td>　- Functions</td>
+            <td>¥3,000</td>
+            <td>実行時間・呼び出し</td>
+        </tr>
+        <tr>
+            <td>　- Hosting</td>
+            <td>¥1,000</td>
+            <td>Web配信</td>
+        </tr>
+        <tr>
+            <td>SendGrid</td>
+            <td>¥0</td>
+            <td>Free Plan</td>
+        </tr>
+        <tr>
+            <td>ImageKit/Cloudinary</td>
+            <td>¥5,000</td>
+            <td>CDN・画像処理</td>
+        </tr>
+        <tr>
+            <th>合計</th>
+            <th>約¥24,000/月</th>
+            <th>運用費用</th>
+        </tr>
+    </tbody></table><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body></html>
