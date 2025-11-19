@@ -30,3 +30,13 @@ export {
   cleanupExpiredSessions,
   getGuestStats,
 } from "./api/guests";
+
+// Export admin functions
+export {
+  getDashboardStats,
+  getOrders,
+  getEventStats,
+  updateOrderStatus,
+  getUsers,
+  setAdminRole,
+} from "./api/admin";
