@@ -1,0 +1,135 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ========================================
+    // Helper Functions
+    // ========================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function hasValidGuestToken(eventId) {
+      // Guest token validation would be done via custom claims or session collection
+      return request.auth != null && request.auth.token.eventId == eventId;
+    }
+    
+    function isEventHost(eventId) {
+      let event = get(/databases/$(database)/documents/events/$(eventId));
+      return isAuthenticated() && request.auth.uid == event.data.hostUserId;
+    }
+    
+    // ========================================
+    // Users Collection
+    // ========================================
+    
+    match /users/{userId} {
+      // Anyone authenticated can read user profiles
+      allow read: if isAuthenticated();
+      
+      // Users can only write their own data
+      allow create, update: if isOwner(userId);
+      
+      // Users cannot delete their own data (use deactivation instead)
+      allow delete: if false;
+    }
+    
+    // ========================================
+    // Events Collection
+    // ========================================
+    
+    match /events/{eventId} {
+      // Read: Authenticated users or guests with valid token
+      allow read: if isAuthenticated() || hasValidGuestToken(eventId);
+      
+      // Create: Any authenticated user can create events
+      allow create: if isAuthenticated() && 
+                       request.resource.data.hostUserId == request.auth.uid;
+      
+      // Update: Only event host
+      allow update: if isEventHost(eventId);
+      
+      // Delete: Only event host (soft delete via status update)
+      allow delete: if isEventHost(eventId);
+    }
+    
+    // ========================================
+    // Photos Collection
+    // ========================================
+    
+    match /photos/{photoId} {
+      // Read: Published photos can be read by anyone with event access
+      allow read: if (resource.data.isPublished == true && 
+                     (isAuthenticated() || hasValidGuestToken(resource.data.eventId))) ||
+                     isEventHost(resource.data.eventId);
+      
+      // Create: Event host or guests can upload
+      allow create: if (isAuthenticated() || 
+                       request.resource.data.uploaderType == 'guest') &&
+                       request.resource.data.eventId is string &&
+                       request.resource.data.uploadedBy is string;
+      
+      // Update: Only event host can update (for publishing)
+      allow update: if isEventHost(resource.data.eventId);
+      
+      // Delete: Only event host can delete
+      allow delete: if isEventHost(resource.data.eventId);
+    }
+    
+    // ========================================
+    // Products Collection
+    // ========================================
+    
+    match /products/{productId} {
+      // Read: Public access for active products
+      allow read: if true;
+      
+      // Write: Admin only (via Functions)
+      allow write: if false;
+    }
+    
+    // ========================================
+    // Orders Collection
+    // ========================================
+    
+    match /orders/{orderId} {
+      // Read: Order owner (by email) or event host
+      allow read: if isAuthenticated() || 
+                     request.auth.token.email == resource.data.shippingInfo.email ||
+                     isEventHost(resource.data.eventId);
+      
+      // Create: Anyone can create (validation in Functions)
+      allow create: if true;
+      
+      // Update: Only via Functions
+      allow update: if false;
+      
+      // Delete: Not allowed
+      allow delete: if false;
+    }
+    
+    // ========================================
+    // Guest Sessions Collection (temporary)
+    // ========================================
+    
+    match /guestSessions/{sessionId} {
+      // Read: Session owner only
+      allow read: if request.auth != null && 
+                     request.auth.token.sessionId == sessionId;
+      
+      // Create: Via Functions only
+      allow create: if false;
+      
+      // Update: Via Functions only
+      allow update: if false;
+      
+      // Delete: Automatic via TTL or manual cleanup
+      allow delete: if false;
+    }
+  }
+}

@@ -1,0 +1,119 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // ========================================
+    // Helper Functions
+    // ========================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    function isValidImageSize() {
+      // Max 10MB
+      return request.resource.size < 10 * 1024 * 1024;
+    }
+    
+    function isEventHost(eventId) {
+      let event = firestore.get(/databases/(default)/documents/events/$(eventId));
+      return isAuthenticated() && request.auth.uid == event.data.hostUserId;
+    }
+    
+    // ========================================
+    // Event Photos
+    // ========================================
+    
+    match /events/{eventId}/photos/{photoId} {
+      // Read: Anyone (public photos)
+      allow read: if true;
+      
+      // Write: Authenticated users or guests for the specific event
+      allow write: if (isAuthenticated() || request.auth != null) && 
+                      isImage() && 
+                      isValidImageSize();
+      
+      // Delete: Only event host
+      allow delete: if isEventHost(eventId);
+    }
+    
+    // ========================================
+    // Photo Thumbnails
+    // ========================================
+    
+    match /events/{eventId}/photos/thumbnails/{thumbId} {
+      // Read: Anyone
+      allow read: if true;
+      
+      // Write: Functions only (auto-generated)
+      allow write: if false;
+      
+      // Delete: Event host
+      allow delete: if isEventHost(eventId);
+    }
+    
+    // ========================================
+    // Photo Medium Size
+    // ========================================
+    
+    match /events/{eventId}/photos/medium/{mediumId} {
+      // Read: Anyone
+      allow read: if true;
+      
+      // Write: Functions only (auto-generated)
+      allow write: if false;
+      
+      // Delete: Event host
+      allow delete: if isEventHost(eventId);
+    }
+    
+    // ========================================
+    // QR Codes
+    // ========================================
+    
+    match /qrcodes/{filename} {
+      // Read: Public (for display)
+      allow read: if true;
+      
+      // Write: Functions only
+      allow write: if false;
+      
+      // Delete: Functions only
+      allow delete: if false;
+    }
+    
+    // ========================================
+    // Product Images
+    // ========================================
+    
+    match /products/{filename} {
+      // Read: Public
+      allow read: if true;
+      
+      // Write: Admin only (manual upload)
+      allow write: if false;
+      
+      // Delete: Admin only
+      allow delete: if false;
+    }
+    
+    // ========================================
+    // Album Downloads (Temporary ZIP files)
+    // ========================================
+    
+    match /downloads/{eventId}/{filename} {
+      // Read: Event host only
+      allow read: if isEventHost(eventId);
+      
+      // Write: Functions only
+      allow write: if false;
+      
+      // Delete: Functions only (auto-cleanup)
+      allow delete: if false;
+    }
+  }
+}
