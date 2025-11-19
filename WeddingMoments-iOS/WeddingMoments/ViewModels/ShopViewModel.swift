@@ -118,13 +118,13 @@ class ShopViewModel: ObservableObject {
     func createOrder(
         eventId: String,
         shippingInfo: Order.ShippingInfo
-    ) async -> (success: Bool, clientSecret: String?) {
+    ) async -> (success: Bool, clientSecret: String?, orderId: String?) {
         isLoading = true
         defer { isLoading = false }
         
         guard !cartItems.isEmpty else {
             errorMessage = "カートが空です"
-            return (false, nil)
+            return (false, nil, nil)
         }
         
         // Prepare order items
@@ -160,15 +160,16 @@ class ShopViewModel: ObservableObject {
             
             if let response = result.data as? [String: Any],
                let success = response["success"] as? Bool, success,
-               let clientSecret = response["clientSecret"] as? String {
-                return (true, clientSecret)
+               let clientSecret = response["clientSecret"] as? String,
+               let orderId = response["orderId"] as? String {
+                return (true, clientSecret, orderId)
             } else {
                 errorMessage = "注文の作成に失敗しました"
-                return (false, nil)
+                return (false, nil, nil)
             }
         } catch {
             errorMessage = "注文の作成に失敗しました: \(error.localizedDescription)"
-            return (false, nil)
+            return (false, nil, nil)
         }
     }
     

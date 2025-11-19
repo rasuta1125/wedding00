@@ -17,5 +17,16 @@ export { createEvent, updateEvent, deleteEvent } from "./api/events";
 export { publishPhotos, downloadAlbum, autoPublishPhotos } from "./api/photos";
 export { createOrder, stripeWebhook, updateShippingStatus } from "./api/orders";
 
-// Export image processing functions (to be implemented)
-// export { generateThumbnails } from "./api/images";
+// Export image processing functions
+export { generateThumbnails, cleanupThumbnails } from "./api/images";
+
+// Export album functions
+export { createAlbumZip, cleanupExpiredZips } from "./api/albums";
+
+// Export guest session functions
+export {
+  createGuestSession,
+  validateGuestSession,
+  cleanupExpiredSessions,
+  getGuestStats,
+} from "./api/guests";

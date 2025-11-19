@@ -28,8 +28,13 @@ WeddingMomentsは、結婚式の思い出を簡単に共有できるiOSアプリ
 
 ## 📦 依存関係
 
-- Firebase iOS SDK
-- StripePayments-iOS (予定)
+- **Firebase iOS SDK** (v10.0+)
+  - Authentication
+  - Firestore
+  - Storage
+  - Functions
+- **Stripe iOS SDK** (v23.0+)
+  - StripePaymentSheet
 - Kingfisher (画像キャッシング、予定)
 
 ## 🚀 セットアップ
@@ -58,8 +63,24 @@ open WeddingMoments.xcodeproj
 
 Swift Package Managerで自動的にインストールされます。
 
-必要なパッケージ:
-- Firebase iOS SDK: `https://github.com/firebase/firebase-ios-sdk`
+#### 必要なパッケージ:
+
+1. **Firebase iOS SDK**
+   - URL: `https://github.com/firebase/firebase-ios-sdk`
+   - Products: FirebaseAuth, FirebaseFirestore, FirebaseStorage, FirebaseFunctions
+
+2. **Stripe iOS SDK**
+   - URL: `https://github.com/stripe/stripe-ios`
+   - Version: 23.0.0 以上
+   - Product: StripePaymentSheet
+
+#### パッケージの追加方法:
+
+1. Xcode で **File > Add Package Dependencies...** を選択
+2. 上記のURLを入力して検索
+3. 必要なProductsを選択してプロジェクトに追加
+
+詳細は [`STRIPE_INTEGRATION.md`](./STRIPE_INTEGRATION.md) を参照してください。
 
 ### 5. ビルド & 実行
 
@@ -99,8 +120,10 @@ WeddingMoments/
 │       ├── ProductListView.swift
 │       ├── ProductDetailView.swift
 │       ├── CartView.swift
-│       └── CheckoutView.swift
+│       ├── CheckoutView.swift
+│       └── OrderSuccessView.swift
 ├── Services/                      # 外部サービス連携
+│   └── StripeService.swift
 └── Utilities/                     # ユーティリティ関数
 ```
 
@@ -120,6 +143,38 @@ WeddingMoments/
 1. Google Cloud Consoleで OAuth 2.0 クライアントIDを作成
 2. Firebase Consoleで Google Sign-in を設定
 3. `GoogleService-Info.plist` を最新版に更新
+
+## 💳 Stripe決済設定
+
+### 1. Stripe SDK の設定
+
+アプリ起動時にStripe APIキーを設定:
+
+```swift
+// WeddingMomentsApp.swift
+import StripePaymentSheet
+
+init() {
+    STPAPIClient.shared.publishableKey = "pk_test_..." // Your publishable key
+}
+```
+
+### 2. Info.plist の更新
+
+カメラアクセス権限を追加（カードスキャン用）:
+
+```xml
+<key>NSCameraUsageDescription</key>
+<string>カメラを使用してカード情報をスキャンします</string>
+```
+
+### 3. テスト用カード
+
+開発時は以下のテストカードを使用:
+- 成功: `4242 4242 4242 4242`
+- 失敗: `4000 0000 0000 9995`
+
+詳細は [`STRIPE_INTEGRATION.md`](./STRIPE_INTEGRATION.md) を参照してください。
 
 ## 🧪 テスト
 
