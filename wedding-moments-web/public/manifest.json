@@ -1,24 +1,115 @@
 {
-  "name": "WeddingMoments",
-  "short_name": "WM",
-  "description": "結婚式写真共有アプリ",
+  "name": "WeddingMoments - 結婚式写真共有アプリ",
+  "short_name": "WeddingMoments",
+  "description": "結婚式の思い出を簡単に共有。ゲストが撮影した写真をリアルタイムで共有し、フォトアルバムグッズも購入できる結婚式写真共有アプリです。",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ec4899",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
+      "src": "/icon-72x72.png",
+      "sizes": "72x72",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable any"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable any"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-1.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    },
+    {
+      "src": "/screenshot-2.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["lifestyle", "photo", "social"],
+  "share_target": {
+    "action": "/join",
+    "method": "GET",
+    "params": {
+      "title": "name",
+      "text": "description",
+      "url": "link"
+    }
+  },
+  "shortcuts": [
+    {
+      "name": "写真をアップロード",
+      "short_name": "Upload",
+      "description": "新しい写真をアップロード",
+      "url": "/join?action=upload",
+      "icons": [
+        {
+          "src": "/icon-upload.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "グッズショップ",
+      "short_name": "Shop",
+      "description": "グッズを購入",
+      "url": "/shop",
+      "icons": [
+        {
+          "src": "/icon-shop.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/weddingmoments"
+    }
+  ],
+  "prefer_related_applications": false
 }

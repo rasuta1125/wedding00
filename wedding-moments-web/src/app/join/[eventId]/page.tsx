@@ -8,6 +8,8 @@ import { Event } from '@/types'
 import { Heart, Loader2, AlertCircle } from 'lucide-react'
 import PhotoGallery from '@/components/PhotoGallery'
 import UploadButton from '@/components/UploadButton'
+import { ErrorBoundary, ErrorDisplay } from '@/components/ErrorBoundary'
+import { PageLoader, PhotoGridSkeleton } from '@/components/LoadingStates'
 
 export default function JoinEventPage() {
   const params = useParams()

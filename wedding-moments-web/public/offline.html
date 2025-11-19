@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>オフライン - WeddingMoments</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+      background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 24px;
+      padding: 48px 32px;
+      max-width: 480px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    .icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+    }
+    
+    h1 {
+      font-size: 32px;
+      color: #1f2937;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+    
+    p {
+      font-size: 16px;
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    
+    .button {
+      display: inline-block;
+      background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(236, 72, 153, 0.3);
+    }
+    
+    .status {
+      margin-top: 24px;
+      padding: 12px 24px;
+      background: #fef2f2;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">📡</div>
+    <h1>オフラインです</h1>
+    <p>
+      インターネット接続を確認してください。<br>
+      接続が復旧したら自動的に再接続します。
+    </p>
+    <a href="/" class="button" onclick="window.location.reload(); return false;">
+      再読み込み
+    </a>
+    <div class="status" id="status">
+      接続を確認中...
+    </div>
+  </div>
+  
+  <script>
+    // Check connection status
+    function updateStatus() {
+      const statusEl = document.getElementById('status')
+      if (navigator.onLine) {
+        statusEl.textContent = '✅ インターネット接続が復旧しました'
+        statusEl.style.background = '#f0fdf4'
+        statusEl.style.color = '#16a34a'
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
+      } else {
+        statusEl.textContent = '❌ オフライン - 接続を確認しています...'
+      }
+    }
+    
+    // Listen for online/offline events
+    window.addEventListener('online', updateStatus)
+    window.addEventListener('offline', updateStatus)
+    
+    // Initial check
+    updateStatus()
+    
+    // Check periodically
+    setInterval(updateStatus, 3000)
+  </script>
+</body>
+</html>

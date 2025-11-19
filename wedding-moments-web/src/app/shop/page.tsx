@@ -7,6 +7,8 @@ import { Product } from '@/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ShoppingCart, Heart, Package } from 'lucide-react'
+import { ErrorBoundary, ErrorDisplay } from '@/components/ErrorBoundary'
+import { ProductGridSkeleton, EmptyState } from '@/components/LoadingStates'
 
 export default function ShopPage() {
   const [products, setProducts] = useState<Product[]>([])
